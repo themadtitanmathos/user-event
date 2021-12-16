@@ -340,14 +340,15 @@ test('{shift}a{/shift}', () => {
   `)
 })
 
-test('{capslock}a{capslock}', () => {
+test('{capslock}a{capslock}a', () => {
   const {element, getEventSnapshot} = setup('<input />')
 
-  // The old behavior to treat {/capslock} like {capslock} makes no sense
-  userEvent.type(element, '{capslock}a{capslock}')
+  userEvent.type(element, '{capslock}a{capslock}a')
+
+  expect(element.value).toEqual('Aa')
 
   expect(getEventSnapshot()).toMatchInlineSnapshot(`
-    Events fired on: input[value="a"]
+    Events fired on: input[value="Aa"]
 
     input[value=""] - pointerover
     input[value=""] - pointerenter
@@ -364,12 +365,16 @@ test('{capslock}a{capslock}', () => {
     input[value=""] - click: Left (0)
     input[value=""] - keydown: CapsLock (20)
     input[value=""] - keyup: CapsLock (20)
-    input[value=""] - keydown: a (97)
-    input[value=""] - keypress: a (97)
-    input[value="a"] - input
-    input[value="a"] - keyup: a (97)
-    input[value="a"] - keydown: CapsLock (20)
-    input[value="a"] - keyup: CapsLock (20)
+    input[value=""] - keydown: A (65)
+    input[value=""] - keypress: A (65)
+    input[value="A"] - input
+    input[value="A"] - keyup: A (65)
+    input[value="A"] - keydown: CapsLock (20)
+    input[value="A"] - keyup: CapsLock (20)
+    input[value="A"] - keydown: a (97)
+    input[value="A"] - keypress: a (97)
+    input[value="Aa"] - input
+    input[value="Aa"] - keyup: a (97)
   `)
 })
 

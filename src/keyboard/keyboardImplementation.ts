@@ -19,7 +19,7 @@ export async function keyboardImplementation(
   const getCurrentElement = () => getActive(document)
 
   const {keyDef, consumedLength, releasePrevious, releaseSelf, repeat} =
-    state.repeatKey ?? getNextKeyDef(text, options)
+    state.repeatKey ?? getNextKeyDef(text, options, state)
 
   const replace = applyPlugins(
     plugins.replaceBehavior,

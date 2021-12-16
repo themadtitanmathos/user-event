@@ -1,4 +1,4 @@
-import {keyboardKey, keyboardOptions} from './types'
+import {keyboardKey, keyboardOptions, keyboardState} from './types'
 
 enum bracketDict {
   '{' = '}',
@@ -33,6 +33,7 @@ enum legacyKeyMap {
 export function getNextKeyDef(
   text: string,
   options: keyboardOptions,
+  state?: keyboardState,
 ): {
   keyDef: keyboardKey
   consumedLength: number
@@ -42,12 +43,16 @@ export function getNextKeyDef(
 } {
   const {
     type,
-    descriptor,
+    descriptor: rawDescriptor,
     consumedLength,
     releasePrevious,
     releaseSelf,
     repeat,
   } = readNextDescriptor(text)
+
+  const descriptor = state?.modifiers.caps
+    ? rawDescriptor.toUpperCase()
+    : rawDescriptor
 
   const keyDef = options.keyboardMap.find(def => {
     if (type === '[') {
